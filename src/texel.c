@@ -55,6 +55,7 @@ extern const int BishopPSQT32[32];
 extern const int RookPSQT32[32];
 extern const int QueenPSQT32[32];
 extern const int KingPSQT32[32];
+extern const int PawnCandidatePasser[2][8];
 extern const int PawnIsolated;
 extern const int PawnStacked;
 extern const int PawnBackwards[2];
@@ -75,11 +76,12 @@ extern const int KingDefenders[12];
 extern const int KingShelter[2][8][8];
 extern const int KingStorm[2][4][8];
 extern const int PassedPawn[2][2][8];
-extern const int PassedFriendlyDistance;
-extern const int PassedEnemyDistance;
+extern const int PassedFriendlyDistance[8];
+extern const int PassedEnemyDistance[8];
 extern const int PassedSafePromotionPath;
 extern const int ThreatWeakPawn;
 extern const int ThreatMinorAttackedByPawn;
+extern const int ThreatMinorAttackedByMinor;
 extern const int ThreatMinorAttackedByMajor;
 extern const int ThreatRookAttackedByLesser;
 extern const int ThreatQueenAttackedByOne;
@@ -426,10 +428,21 @@ void printParameters_1(char *name, int params[NTERMS][PHASE_NB], int i, int A) {
 
 void printParameters_2(char *name, int params[NTERMS][PHASE_NB], int i, int A, int B) {
 
-    (void)name, (void)params, (void)i, (void)A, (void)B;
+    printf("const int %s[%d][%d] = {\n", name, A, B);
 
-    printf("PRINT_PARAM_2 IS NOT ENABLED!\n");
-    exit(EXIT_FAILURE);
+    for (int a = 0; a < A; a++) {
+
+        printf("   {");
+
+        for (int b = 0; b < B; b++, i++) {
+            printf("S(%4d,%4d)", params[i][MG], params[i][EG]);
+            printf("%s", b == B - 1 ? "" : ", ");
+        }
+
+        printf("},\n");
+    }
+
+    printf("};\n");
 
 }
 

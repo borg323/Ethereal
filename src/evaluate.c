@@ -60,75 +60,82 @@ const int PieceValues[8][PHASE_NB] = {
 
 /* Pawn Evaluation Terms */
 
-const int PawnIsolated = S(  -3,  -1);
+const int PawnCandidatePasser[2][RANK_NB] = {
+    {S(   0,   0), S(  -4,   0), S(  -9,   6), S( -10,  27),
+     S(   1,  44), S(  23,  17), S(   0,   0), S(   0,   0)},
+    {S(   0,   0), S(  -4,   6), S(  -5,  19), S(   9,  51),
+     S(  24,  65), S(  14,  10), S(   0,   0), S(   0,   0)},
+};
 
-const int PawnStacked = S( -10, -34);
+const int PawnIsolated = S(  -4,  -6);
 
-const int PawnBackwards[2] = { S(   7,  -2), S( -10, -13) };
+const int PawnStacked = S(  -5, -28);
+
+const int PawnBackwards[2] = { S(   5,  -3), S(  -9, -16) };
 
 const int PawnConnected32[32] = {
     S(   0,   0), S(   0,   0), S(   0,   0), S(   0,   0),
-    S(   0, -16), S(   7,   1), S(   3,  -3), S(   5,  20),
-    S(   7,   0), S(  21,   0), S(  15,   8), S(  17,  21),
-    S(   6,   0), S(  20,   3), S(  14,   7), S(  16,  17),
-    S(   6,  11), S(  20,  20), S(  19,  24), S(  37,  24),
-    S(  23,  55), S(  24,  65), S(  66,  63), S(  50,  75),
-    S( 106, -14), S( 199,  17), S( 227,  22), S( 250,  76),
+    S(  -1, -10), S(  10,   1), S(   0,   0), S(   9,  18),
+    S(  10,   2), S(  22,   0), S(  16,   6), S(  19,  14),
+    S(   4,   0), S(  21,   4), S(  12,   8), S(  18,  15),
+    S(   4,  10), S(  20,  15), S(  19,  22), S(  37,  20),
+    S(  24,  53), S(  24,  64), S(  64,  61), S(  50,  73),
+    S( 104, -14), S( 197,  15), S( 227,  20), S( 249,  74),
     S(   0,   0), S(   0,   0), S(   0,   0), S(   0,   0),
 };
 
 /* Knight Evaluation Terms */
 
-const int KnightOutpost[2] = { S(  22,  -7), S(  32,   0) };
+const int KnightOutpost[2] = { S(  15,  -5), S(  32,   3) };
 
-const int KnightBehindPawn = S(   5,  13);
+const int KnightBehindPawn = S(   4,  18);
 
 const int KnightMobility[9] = {
-    S( -91, -86), S( -36, -94), S( -19, -43), S(  -5, -15),
-    S(   3, -16), S(   8,   0), S(  18,  -3), S(  33,  -5),
-    S(  50, -44),
+    S( -90, -85), S( -36, -94), S( -22, -41), S(  -6, -14),
+    S(   2, -14), S(   8,   2), S(  17,   3), S(  33,  -1),
+    S(  53, -41),
 };
 
 /* Bishop Evaluation Terms */
 
-const int BishopPair = S(  38,  69);
+const int BishopPair = S(  32,  70);
 
-const int BishopRammedPawns = S( -11,  -8);
+const int BishopRammedPawns = S( -11, -12);
 
-const int BishopOutpost[2] = { S(  27,  -1), S(  39,   0) };
+const int BishopOutpost[2] = { S(  24,   1), S(  40,   0) };
 
-const int BishopBehindPawn = S(   4,  11);
+const int BishopBehindPawn = S(   3,  13);
 
 const int BishopMobility[14] = {
-    S( -59,-128), S( -48, -67), S( -18, -46), S(  -5, -21),
-    S(   5,  -9), S(  17,   0), S(  22,   7), S(  27,   4),
-    S(  28,   9), S(  34,   3), S(  36,   4), S(  46, -15),
-    S(  46,  -4), S(  40, -35),
+    S( -60,-128), S( -48, -68), S( -16, -47), S(  -5, -21),
+    S(   5, -11), S(  19,   0), S(  24,   7), S(  26,   6),
+    S(  26,  12), S(  34,   6), S(  36,   4), S(  46, -13),
+    S(  46,  -2), S(  40, -33),
 };
 
 /* Rook Evaluation Terms */
 
-const int RookFile[2] = { S(  14,   0), S(  38,  -8) };
+const int RookFile[2] = { S(  11,   0), S(  41,  -1) };
 
 const int RookOnSeventh = S(   0,  25);
 
 const int RookMobility[15] = {
-    S(-147,-107), S( -72,-120), S( -16, -68), S(  -9, -26),
-    S(  -8,  -3), S(  -7,  14), S(  -8,  25), S(  -3,  32),
-    S(   1,  35), S(   5,  36), S(   9,  42), S(  17,  48),
-    S(  19,  50), S(  25,  46), S(  20,  47),
+    S(-147,-107), S( -71,-120), S( -20, -69), S( -11, -28),
+    S(  -9,  -7), S(  -9,   8), S(  -9,  21), S(  -1,  27),
+    S(   3,  35), S(   7,  36), S(  10,  45), S(  21,  49),
+    S(  22,  52), S(  28,  48), S(  21,  48),
 };
 
 /* Queen Evaluation Terms */
 
 const int QueenMobility[28] = {
-    S( -61,-263), S(-217,-390), S( -48,-205), S( -36,-190),
-    S( -12,-132), S( -26, -69), S( -14, -91), S( -19, -76),
-    S( -12, -61), S( -10, -52), S(  -6, -29), S(  -5, -27),
-    S(  -7, -16), S(   0,  -9), S(   0,  -4), S(  -3,   3),
-    S(   5,  16), S(   0,  14), S(  12,  22), S(  -1,  19),
-    S(   0,  19), S(  20,  23), S(   5,  -1), S(  32,   5),
-    S(  35,  13), S(  58,  -6), S( -51, -19), S(   0,  -2),
+    S( -61,-263), S(-217,-390), S( -48,-205), S( -38,-190),
+    S( -13,-132), S( -28, -69), S( -17, -90), S( -22, -76),
+    S( -12, -61), S( -10, -51), S(  -3, -28), S(  -2, -27),
+    S(  -4, -16), S(   3,  -7), S(   2,  -2), S(   0,   3),
+    S(   6,  16), S(   0,  13), S(  12,  21), S(   1,  20),
+    S(   0,  18), S(  19,  22), S(   5,  -1), S(  32,   5),
+    S(  34,  13), S(  56,  -6), S( -51, -17), S(   0,   0),
 };
 
 /* King Evaluation Terms */
@@ -208,27 +215,34 @@ const int KSAdjustment      =  -18;
 
 /* Passed Pawn Evaluation Terms */
 
-const int PassedPawn[2][2][RANK_NB] = {
-  {{S(   0,   0), S( -28, -25), S( -23,   5), S( -15,   0),
-    S(  18,   1), S(  57,   0), S( 143,  32), S(   0,   0)},
-   {S(   0,   0), S(  -4,  -6), S( -23,  13), S( -14,  29),
-    S(   5,  43), S(  65,  66), S( 191, 135), S(   0,   0)}},
-  {{S(   0,   0), S( -11,   6), S( -18,   5), S(  -9,  25),
-    S(  30,  42), S(  79,  78), S( 238, 160), S(   0,   0)},
-   {S(   0,   0), S( -23, -10), S( -19,  -1), S( -18,  36),
-    S(   0, 103), S(  45, 225), S( 127, 384), S(   0,   0)}},
+const int PassedPawn[2][2][8] = {
+  {{S(   0,   0), S( -28, -25), S( -22,   3), S( -12,   0),
+    S(  15,  -1), S(  54,   0), S( 141,  31), S(   0,   0)},
+   {S(   0,   0), S(  -5,  -7), S( -23,  11), S( -15,  24),
+    S(   2,  41), S(  65,  66), S( 191, 136), S(   0,   0)}},
+  {{S(   0,   0), S( -12,   5), S( -18,   1), S(  -9,  20),
+    S(  26,  37), S(  76,  75), S( 238, 158), S(   0,   0)},
+   {S(   0,   0), S( -23,  -8), S( -17,  -2), S( -17,  34),
+    S(  -1, 101), S(  44, 223), S( 125, 381), S(   0,   0)}},
 };
 
-const int PassedFriendlyDistance = S(   2,  -7);
+const int PassedFriendlyDistance[RANK_NB] = {
+    S(   0,   0), S(   2,   1), S(   2,   0), S(   2,  -4),
+    S(   0,  -9), S(   0, -12), S(   0, -16), S(   0,   0),
+};
 
-const int PassedEnemyDistance = S(   0,   8);
+const int PassedEnemyDistance[RANK_NB] = {
+    S(   0,   0), S(   0,   1), S(   0,   0), S(   0,   6),
+    S(   1,  13), S(   0,  20), S(   0,  29), S(   0,   0),
+};
 
-const int PassedSafePromotionPath = S(   2,  25);
+const int PassedSafePromotionPath = S(   0,  26);
 
 /* Threat Evaluation Terms */
 
 const int ThreatWeakPawn             = S( -37, -39);
 const int ThreatMinorAttackedByPawn  = S( -68, -54);
+const int ThreatMinorAttackedByMinor = S( -24,  -9);
 const int ThreatMinorAttackedByMajor = S( -47, -44);
 const int ThreatRookAttackedByLesser = S( -55, -25);
 const int ThreatQueenAttackedByOne   = S( -97,   1);
@@ -310,7 +324,7 @@ int evaluatePawns(EvalInfo *ei, Board *board, int colour) {
     const int US = colour, THEM = !colour;
     const int Forward = (colour == WHITE) ? 8 : -8;
 
-    int sq, semi, eval = 0, pkeval = 0;
+    int sq, flag, eval = 0, pkeval = 0;
     uint64_t pawns, myPawns, tempPawns, enemyPawns, attacks;
 
     // Store off pawn attacks for king safety and threat computations
@@ -337,12 +351,26 @@ int evaluatePawns(EvalInfo *ei, Board *board, int colour) {
         if (TRACE) T.PawnValue[US]++;
         if (TRACE) T.PawnPSQT32[relativeSquare32(sq, US)][US]++;
 
+        uint64_t stoppers    = enemyPawns & passedPawnMasks(US, sq);
+        uint64_t threats     = enemyPawns & pawnAttacks(US, sq);
+        uint64_t support     = myPawns    & pawnAttacks(THEM, sq);
+        uint64_t pushThreats = enemyPawns & pawnAttacks(US, sq + Forward);
+        uint64_t pushSupport = myPawns    & pawnAttacks(THEM, sq + Forward);
+        uint64_t leftovers   = stoppers ^ threats ^ pushThreats;
+
         // Save passed pawn information for later evaluation
-        if (!(passedPawnMasks(US, sq) & enemyPawns))
-            setBit(&ei->passedPawns, sq);
+        if (!stoppers) setBit(&ei->passedPawns, sq);
+
+        // Apply a bonus for pawns which will become passers by advancing a single
+        // square when exchanging our supporters with the remaining passer stoppers
+        else if (!leftovers && popcount(pushSupport) >= popcount(pushThreats)) {
+            flag = popcount(support) >= popcount(threats);
+            pkeval += PawnCandidatePasser[flag][relativeRankOf(US, sq)];
+            if (TRACE) T.PawnCandidatePasser[flag][relativeRankOf(US, sq)][US]++;
+        }
 
         // Apply a penalty if the pawn is isolated
-        if (!(isolatedPawnMasks(sq) & myPawns)) {
+        if (!(adjacentFilesMasks(fileOf(sq)) & myPawns)) {
             pkeval += PawnIsolated;
             if (TRACE) T.PawnIsolated[US]++;
         }
@@ -356,9 +384,9 @@ int evaluatePawns(EvalInfo *ei, Board *board, int colour) {
         // Apply a penalty if the pawn is backward
         if (   !(passedPawnMasks(THEM, sq) & myPawns)
             &&  (testBit(ei->pawnAttacks[THEM], sq + Forward))) {
-            semi = !(Files[fileOf(sq)] & enemyPawns);
-            pkeval += PawnBackwards[semi];
-            if (TRACE) T.PawnBackwards[semi][US]++;
+            flag = !(Files[fileOf(sq)] & enemyPawns);
+            pkeval += PawnBackwards[flag];
+            if (TRACE) T.PawnBackwards[flag][US]++;
         }
 
         // Apply a bonus if the pawn is connected and not backward
@@ -380,7 +408,6 @@ int evaluateKnights(EvalInfo *ei, Board *board, int colour) {
     int sq, defended, count, eval = 0;
     uint64_t attacks;
 
-    uint64_t myPawns     = board->pieces[PAWN  ] & board->colours[US  ];
     uint64_t enemyPawns  = board->pieces[PAWN  ] & board->colours[THEM];
     uint64_t tempKnights = board->pieces[KNIGHT] & board->colours[US  ];
 
@@ -402,7 +429,7 @@ int evaluateKnights(EvalInfo *ei, Board *board, int colour) {
 
         // Apply a bonus if the knight is on an outpost square, and cannot be attacked
         // by an enemy pawn. Increase the bonus if one of our pawns supports the knight
-        if (     testBit(outpostRanks(US), sq)
+        if (     testBit(outpostRanksMasks(US), sq)
             && !(outpostSquareMasks(US, sq) & enemyPawns)) {
             defended = testBit(ei->pawnAttacks[US], sq);
             eval += KnightOutpost[defended];
@@ -410,7 +437,7 @@ int evaluateKnights(EvalInfo *ei, Board *board, int colour) {
         }
 
         // Apply a bonus if the knight is behind a pawn
-        if (testBit(pawnAdvance((myPawns | enemyPawns), 0ull, THEM), sq)) {
+        if (testBit(pawnAdvance(board->pieces[PAWN], 0ull, THEM), sq)) {
             eval += KnightBehindPawn;
             if (TRACE) T.KnightBehindPawn[US]++;
         }
@@ -473,7 +500,7 @@ int evaluateBishops(EvalInfo *ei, Board *board, int colour) {
 
         // Apply a bonus if the bishop is on an outpost square, and cannot be attacked
         // by an enemy pawn. Increase the bonus if one of our pawns supports the bishop.
-        if (     testBit(outpostRanks(US), sq)
+        if (     testBit(outpostRanksMasks(US), sq)
             && !(outpostSquareMasks(US, sq) & enemyPawns)) {
             defended = testBit(ei->pawnAttacks[US], sq);
             eval += BishopOutpost[defended];
@@ -658,14 +685,12 @@ int evaluateKings(EvalInfo *ei, Board *board, int colour) {
         uint64_t rookThreats   = rookAttacks(kingSq, occupied);
         uint64_t queenThreats  = bishopThreats | rookThreats;
 
-        // Identify if pieces can move to those checking squares safely.
-        // We check if our Queen can attack the square for safe Queen checks.
-        // No attacks of other pieces is implicit in our definition of weak.
-        uint64_t knightChecks = knightThreats & safe &  ei->attackedBy[THEM][KNIGHT];
-        uint64_t bishopChecks = bishopThreats & safe &  ei->attackedBy[THEM][BISHOP];
-        uint64_t rookChecks   = rookThreats   & safe &  ei->attackedBy[THEM][ROOK  ];
-        uint64_t queenChecks  = queenThreats  & safe &  ei->attackedBy[THEM][QUEEN ]
-                                                     & ~ei->attackedBy[  US][QUEEN ];
+        // Identify if there are pieces which can move to the checking squares safely.
+        // We consider forking a Queen to be a safe check, even with our own Queen.
+        uint64_t knightChecks = knightThreats & safe & ei->attackedBy[THEM][KNIGHT];
+        uint64_t bishopChecks = bishopThreats & safe & ei->attackedBy[THEM][BISHOP];
+        uint64_t rookChecks   = rookThreats   & safe & ei->attackedBy[THEM][ROOK  ];
+        uint64_t queenChecks  = queenThreats  & safe & ei->attackedBy[THEM][QUEEN ];
 
         count  = ei->kingAttackersCount[THEM] * ei->kingAttackersWeight[THEM];
 
@@ -673,10 +698,10 @@ int evaluateKings(EvalInfo *ei, Board *board, int colour) {
                + KSWeakSquares     * popcount(weak & ei->kingAreas[US])
                + KSFriendlyPawns   * popcount(myPawns & ei->kingAreas[US] & ~weak)
                + KSNoEnemyQueens   * !enemyQueens
-               + KSSafeQueenCheck  * !!queenChecks
-               + KSSafeRookCheck   * !!rookChecks
-               + KSSafeBishopCheck * !!bishopChecks
-               + KSSafeKnightCheck * !!knightChecks
+               + KSSafeQueenCheck  * popcount(queenChecks)
+               + KSSafeRookCheck   * popcount(rookChecks)
+               + KSSafeBishopCheck * popcount(bishopChecks)
+               + KSSafeKnightCheck * popcount(knightChecks)
                + KSAdjustment;
 
         // Convert safety to an MG and EG score, if we are unsafe
@@ -692,11 +717,11 @@ int evaluateKings(EvalInfo *ei, Board *board, int colour) {
     for (int file = MAX(0, kingFile - 1); file <= MIN(FILE_NB - 1, kingFile + 1); file++) {
 
         // Find closest friendly pawn at or above our King on a given file
-        uint64_t ours = myPawns & Files[file] & ranksAtOrAboveMasks(US, kingRank);
+        uint64_t ours = myPawns & Files[file] & forwardRanksMasks(US, kingRank);
         int ourDist = !ours ? 7 : abs(kingRank - rankOf(backmost(US, ours)));
 
         // Find closest enemy pawn at or above our King on a given file
-        uint64_t theirs = enemyPawns & Files[file] & ranksAtOrAboveMasks(US, kingRank);
+        uint64_t theirs = enemyPawns & Files[file] & forwardRanksMasks(US, kingRank);
         int theirDist = !theirs ? 7 : abs(kingRank - rankOf(backmost(US, theirs)));
 
         // Evaluate King Shelter using pawn distance. Use seperate evaluation
@@ -740,16 +765,16 @@ int evaluatePassedPawns(EvalInfo* ei, Board* board, int colour){
 
         // Evaluate based on distance from our king
         dist = distanceBetween(sq, ei->kingSquare[US]);
-        eval += dist * PassedFriendlyDistance;
-        if (TRACE) T.PassedFriendlyDistance[US] += dist;
+        eval += dist * PassedFriendlyDistance[rank];
+        if (TRACE) T.PassedFriendlyDistance[rank][US] += dist;
 
         // Evaluate based on distance from their king
         dist = distanceBetween(sq, ei->kingSquare[THEM]);
-        eval += dist * PassedEnemyDistance;
-        if (TRACE) T.PassedEnemyDistance[US] += dist;
+        eval += dist * PassedEnemyDistance[rank];
+        if (TRACE) T.PassedEnemyDistance[rank][US] += dist;
 
         // Apply a bonus when the path to promoting is uncontested
-        bitboard = ranksAtOrAboveMasks(US, rankOf(sq)) & Files[fileOf(sq)];
+        bitboard = forwardRanksMasks(US, rankOf(sq)) & Files[fileOf(sq)];
         flag = !(bitboard & ei->attacked[THEM]);
         eval += flag * PassedSafePromotionPath;
         if (TRACE) T.PassedSafePromotionPath[US] += flag;
@@ -806,7 +831,12 @@ int evaluateThreats(EvalInfo *ei, Board *board, int colour) {
     eval += count * ThreatMinorAttackedByPawn;
     if (TRACE) T.ThreatMinorAttackedByPawn[US] += count;
 
-    // Penalty for all major threats against our unsupported knights and bishops
+    // Penalty for any minor threat against minor pieces
+    count = popcount((knights | bishops) & attacksByMinors);
+    eval += count * ThreatMinorAttackedByMinor;
+    if (TRACE) T.ThreatMinorAttackedByMinor[US] += count;
+
+    // Penalty for all major threats against poorly supported minors
     count = popcount((knights | bishops) & poorlyDefended & attacksByMajors);
     eval += count * ThreatMinorAttackedByMajor;
     if (TRACE) T.ThreatMinorAttackedByMajor[US] += count;
@@ -889,8 +919,8 @@ void initializeEvalInfo(EvalInfo* ei, Board* board, PawnKingTable* pktable){
     ei->blockedPawns[WHITE] = pawnAdvance(white | black, ~whitePawns, BLACK);
     ei->blockedPawns[BLACK] = pawnAdvance(white | black, ~blackPawns, WHITE);
 
-    ei->kingAreas[WHITE] = kingAttacks(wKingSq) | (1ull << wKingSq) | (kingAttacks(wKingSq) << 8);
-    ei->kingAreas[BLACK] = kingAttacks(bKingSq) | (1ull << bKingSq) | (kingAttacks(bKingSq) >> 8);
+    ei->kingAreas[WHITE] = kingAreaMasks(WHITE, wKingSq);
+    ei->kingAreas[BLACK] = kingAreaMasks(BLACK, bKingSq);
 
     ei->mobilityAreas[WHITE] = ~(ei->pawnAttacks[BLACK] | (white & kings) | ei->blockedPawns[WHITE]);
     ei->mobilityAreas[BLACK] = ~(ei->pawnAttacks[WHITE] | (black & kings) | ei->blockedPawns[BLACK]);
