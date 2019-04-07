@@ -22,7 +22,6 @@
 #include "attacks.h"
 #include "board.h"
 #include "bitboards.h"
-#include "castle.h"
 #include "evaluate.h"
 #include "history.h"
 #include "move.h"
@@ -36,23 +35,16 @@ void initMovePicker(MovePicker* mp, Thread* thread, uint16_t ttMove, int height)
 
     // Start with the table move
     mp->stage = STAGE_TABLE;
-
-    // Save possible special moves
     mp->tableMove = ttMove;
-    mp->killer1   = thread->killers[height][0];
-    mp->killer2   = thread->killers[height][1];
-    mp->counter   = getCounterMove(thread, height);
+
+    // Lookup our refutations (killers and counter moves)
+    getRefutationMoves(thread, height, &mp->killer1, &mp->killer2, &mp->counter);
 
     // Threshold for good noisy
     mp->threshold = 0;
 
-    // Reference to the board
     mp->thread = thread;
-
-    // Reference for getting stats
     mp->height = height;
-
-    // Normal picker returns bad noisy moves
     mp->type = NORMAL_PICKER;
 }
 
@@ -70,13 +62,8 @@ void initNoisyMovePicker(MovePicker* mp, Thread* thread, int threshold){
     // Threshold for good noisy
     mp->threshold = threshold;
 
-    // Reference to the board
     mp->thread = thread;
-
-    // No stats used, set to 0 to be safe
     mp->height = 0;
-
-    // Noisy picker skips bad noisy moves
     mp->type = NOISY_PICKER;
 }
 
@@ -202,7 +189,7 @@ uint16_t selectNextMove(MovePicker* mp, Board* board, int skipQuiets){
         if (!skipQuiets){
             mp->quietSize = 0;
             genAllQuietMoves(board, mp->moves + mp->split, &mp->quietSize);
-            evaluateQuietMoves(mp);
+            getHistoryScores(mp->thread, mp->moves, mp->values, mp->split, mp->quietSize, mp->height);
         }
 
         mp->stage = STAGE_QUIET;
@@ -321,16 +308,6 @@ void evaluateNoisyMoves(MovePicker* mp){
     }
 }
 
-void evaluateQuietMoves(MovePicker* mp){
-
-    // Sort moves based on Butterfly history, Counter
-    // Move History, as well as Follow Up Move History.
-    for (int i = mp->split; i < mp->split + mp->quietSize; i++)
-        mp->values[i] = getHistoryScore(mp->thread, mp->moves[i])
-                      + getCMHistoryScore(mp->thread, mp->height, mp->moves[i])
-                      + getFUHistoryScore(mp->thread, mp->height, mp->moves[i]);
-}
-
 int moveIsPsuedoLegal(Board* board, uint16_t move){
 
     int colour = board->turn;
@@ -429,14 +406,14 @@ int moveIsPsuedoLegal(Board* board, uint16_t move){
 
         if (colour == WHITE){
 
-            if (  ((occupied & WHITE_CASTLE_KING_SIDE_MAP) == 0ull)
-                && (board->castleRights & WHITE_KING_RIGHTS)
+            if (  ((occupied & WHITE_OO_MAP) == 0ull)
+                && (board->castleRights & WHITE_OO_RIGHTS)
                 &&  MoveMake(4, 6, CASTLE_MOVE) == move
                 && !squareIsAttacked(board, WHITE, 5))
                 return 1;
 
-            if (  ((occupied & WHITE_CASTLE_QUEEN_SIDE_MAP) == 0ull)
-                && (board->castleRights & WHITE_QUEEN_RIGHTS)
+            if (  ((occupied & WHITE_OOO_MAP) == 0ull)
+                && (board->castleRights & WHITE_OOO_RIGHTS)
                 &&  MoveMake(4, 2, CASTLE_MOVE) == move
                 && !squareIsAttacked(board, WHITE, 3))
                 return 1;
@@ -444,14 +421,14 @@ int moveIsPsuedoLegal(Board* board, uint16_t move){
 
         if (colour == BLACK){
 
-            if (  ((occupied & BLACK_CASTLE_KING_SIDE_MAP) == 0ull)
-                && (board->castleRights & BLACK_KING_RIGHTS)
+            if (  ((occupied & BLACK_OO_MAP) == 0ull)
+                && (board->castleRights & BLACK_OO_RIGHTS)
                 &&  MoveMake(60, 62, CASTLE_MOVE) == move
                 && !squareIsAttacked(board, BLACK, 61))
                 return 1;
 
-            if (  ((occupied & BLACK_CASTLE_QUEEN_SIDE_MAP) == 0ull)
-                && (board->castleRights & BLACK_QUEEN_RIGHTS)
+            if (  ((occupied & BLACK_OOO_MAP) == 0ull)
+                && (board->castleRights & BLACK_OOO_RIGHTS)
                 &&  MoveMake(60, 58, CASTLE_MOVE) == move
                 && !squareIsAttacked(board, BLACK, 59))
                 return 1;

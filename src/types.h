@@ -21,29 +21,34 @@
 #include <assert.h>
 #include <stdint.h>
 
-enum {WHITE, BLACK};
+enum { MG, EG };
 
-enum {PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING};
+enum { WHITE, BLACK };
+
+enum { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING };
+
+enum { MAX_PLY = 128, MAX_MOVES = 256 };
 
 enum {
-    WHITE_PAWN   =  0,
-    BLACK_PAWN   =  1,
-    WHITE_KNIGHT =  4,
-    BLACK_KNIGHT =  5,
-    WHITE_BISHOP =  8,
-    BLACK_BISHOP =  9,
-    WHITE_ROOK   = 12,
-    BLACK_ROOK   = 13,
-    WHITE_QUEEN  = 16,
-    BLACK_QUEEN  = 17,
-    WHITE_KING   = 20,
-    BLACK_KING   = 21,
+    WHITE_PAWN   =  0, BLACK_PAWN   =  1,
+    WHITE_KNIGHT =  4, BLACK_KNIGHT =  5,
+    WHITE_BISHOP =  8, BLACK_BISHOP =  9,
+    WHITE_ROOK   = 12, BLACK_ROOK   = 13,
+    WHITE_QUEEN  = 16, BLACK_QUEEN  = 17,
+    WHITE_KING   = 20, BLACK_KING   = 21,
     EMPTY        = 26
 };
 
 enum {
-    MAX_PLY = 128,
-    MAX_MOVES = 256
+    WHITE_OO_RIGHTS = 1, WHITE_OOO_RIGHTS = 2,
+    BLACK_OO_RIGHTS = 4, BLACK_OOO_RIGHTS = 8
+};
+
+enum {
+    WHITE_OO_MAP  = ((1ull <<  5) | (1ull <<  6)),
+    WHITE_OOO_MAP = ((1ull <<  1) | (1ull <<  2) | (1ull <<  3)),
+    BLACK_OO_MAP  = ((1ull << 61) | (1ull << 62)),
+    BLACK_OOO_MAP = ((1ull << 57) | (1ull << 58) | (1ull << 59))
 };
 
 enum {
@@ -60,11 +65,7 @@ enum {
     FILE_NB   = 8,
     PHASE_NB  = 2,
     PIECE_NB  = 6,
-};
-
-enum {
-    MG = 0,
-    EG = 1,
+    CONT_NB   = 2
 };
 
 static inline int pieceType(int p) {
@@ -110,8 +111,7 @@ typedef struct ThreadsGo ThreadsGo;
 
 // Renamings, currently for move ordering
 
-typedef uint16_t KillerTable[MAX_PLY][2];
+typedef uint16_t KillerTable[MAX_PLY+1][2];
 typedef uint16_t CounterMoveTable[COLOUR_NB][PIECE_NB][SQUARE_NB];
 typedef int16_t HistoryTable[COLOUR_NB][SQUARE_NB][SQUARE_NB];
-typedef int16_t CMHistoryTable[PIECE_NB][SQUARE_NB][PIECE_NB][SQUARE_NB];
-typedef int16_t FUHistoryTable[PIECE_NB][SQUARE_NB][PIECE_NB][SQUARE_NB];
+typedef int16_t ContinuationTable[CONT_NB][PIECE_NB][SQUARE_NB][PIECE_NB][SQUARE_NB];

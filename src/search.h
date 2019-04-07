@@ -67,14 +67,18 @@ int thisTacticalMoveValue(Board* board, uint16_t move);
 
 int bestTacticalMoveValue(Board* board);
 
-int moveIsSingular(Thread* thread, uint16_t ttMove, int ttValue, Undo* undo, int depth, int height);
+int moveIsSingular(Thread* thread, uint16_t ttMove, int ttValue, int depth, int height);
 
 static const int SMPCycles      = 16;
 static const int SkipSize[16]   = { 1, 1, 1, 2, 2, 2, 1, 3, 2, 2, 1, 3, 3, 2, 2, 1 };
 static const int SkipDepths[16] = { 1, 2, 2, 4, 4, 3, 2, 5, 4, 3, 2, 6, 5, 4, 3, 2 };
 
+static const int WindowDepth   = 5;
+static const int WindowSize    = 14;
+static const int WindowTimerMS = 5000;
+
 static const int RazorDepth = 1;
-static const int RazorMargin = 350;
+static const int RazorMargin = 325;
 
 static const int BetaPruningDepth = 8;
 static const int BetaMargin = 85;
@@ -84,9 +88,7 @@ static const int NullMovePruningDepth = 2;
 static const int ProbCutDepth = 5;
 static const int ProbCutMargin = 100;
 
-static const int IIDDepth = 3;
-
-static const int FutilityMargin = 95;
+static const int FutilityMargin = 90;
 static const int FutilityPruningDepth = 8;
 static const int FutilityPruningHistoryLimit[] = { 12000, 6000 };
 
@@ -98,21 +100,21 @@ static const int FollowUpMoveHistoryLimit[] = { -2000, -4000 };
 
 static const int LateMovePruningDepth = 8;
 static const int LateMovePruningCounts[2][9] = {
-    {  0,  3,  4,  7, 12, 16, 21, 28, 34},
-    {  0,  5,  7, 12, 18, 27, 38, 50, 65},
+    {  0,  3,  4,  6, 10, 14, 19, 25, 31},
+    {  0,  5,  7, 11, 17, 26, 36, 48, 63},
 };
 
 static const int SEEPruningDepth = 8;
-static const int SEEQuietMargin = -85;
-static const int SEENoisyMargin = -20;
-
-static const int QSEEMargin = 1;
-
-static const int QFutilityMargin = 100;
-
+static const int SEEQuietMargin = -80;
+static const int SEENoisyMargin = -18;
 static const int SEEPieceValues[] = {
      100,  450,  450,  675,
     1300,    0,    0,    0,
 };
+
+static const int QSEEMargin = 1;
+static const int QFutilityMargin = 100;
+
+static const int SingularQuietLimit = 6;
 
 #endif

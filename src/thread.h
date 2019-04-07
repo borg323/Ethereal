@@ -49,29 +49,27 @@ struct Thread {
     int *pieceStack;
     int _pieceStack[MAX_PLY+4];
 
+    Undo undoStack[MAX_PLY];
+
     jmp_buf jbuffer;
 
     int index;
     int nthreads;
     Thread* threads;
 
-    KillerTable killers;
-    HistoryTable history;
-    CMHistoryTable cmhistory;
-    FUHistoryTable fuhistory;
-    CounterMoveTable cmtable;
     PawnKingTable pktable;
+    KillerTable killers;
+    CounterMoveTable cmtable;
+    HistoryTable history;
+    ContinuationTable continuation;
 };
 
 
 Thread* createThreadPool(int nthreads);
-
 void resetThreadPool(Thread* threads);
-
 void newSearchThreadPool(Thread* threads, Board* board, Limits* limits, SearchInfo* info);
 
 uint64_t nodesSearchedThreadPool(Thread* threads);
-
 uint64_t tbhitsSearchedThreadPool(Thread* threads);
 
 #endif
